@@ -13,10 +13,10 @@ int main(void) {
 
     std::string expected {"746865206b696420646f6e277420706c6179"};
 
-    for (auto i = 0U; i < buffer.size(); ++i) {
+    for (auto i = 0U; i < buffer.size(); i += 2) {
         int a, b;
-        std::istringstream{buffer.substr(i, 1)} >> std::hex >> a;
-        std::istringstream{input.substr(i, 1)} >> std::hex >> b;
+        std::istringstream{buffer.substr(i, 2)} >> std::hex >> a;
+        std::istringstream{input.substr(i, 2)} >> std::hex >> b;
         std::stringstream ss;
         ss << std::hex << (a ^ b);
         output += ss.str();
