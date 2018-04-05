@@ -1,0 +1,6 @@
+add_executable(challenge_1 challenge_1.cpp)
+add_executable(challenge_2 challenge_2.cpp)
+add_executable(challenge_3 challenge_3.cpp)
+add_executable(challenge_4 challenge_4.cpp)
+add_executable(challenge_5 challenge_5.cpp)
+add_executable(challenge_6 challenge_6.cpp)
