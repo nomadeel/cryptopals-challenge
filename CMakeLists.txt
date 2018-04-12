@@ -4,3 +4,4 @@ set_target_properties(cryptopp PROPERTIES IMPORTED_LOCATION "${PROJECT_SOURCE_DI
 include_directories("${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(set1)
+add_subdirectory(set2)
