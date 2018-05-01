@@ -1,7 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <random>
 #include <cassert>
 
 #include "cryptopp/cryptlib.h"
@@ -82,10 +81,6 @@ std::string encryption_oracle(std::string &input) {
         unknown_string = decode_unknown_string();
         generated_key = true;
     }
-
-    // Initialise a random number generator
-    auto seed = std::random_device()();
-    std::mt19937 rng(seed);
 
     std::string working_copy {(input + unknown_string)};
 
