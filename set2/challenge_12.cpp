@@ -74,8 +74,8 @@ std::string ecb_encrypt(std::string &input, CryptoPP::byte *key) {
 }
 
 std::string encryption_oracle(std::string &input) {
-    CryptoPP::AutoSeededRandomPool prng;
     if (!generated_key) {
+        CryptoPP::AutoSeededRandomPool prng;
         // Generate the consistent key and base64 decode the unknown string
         prng.GenerateBlock(key, key.size());
         unknown_string = decode_unknown_string();
