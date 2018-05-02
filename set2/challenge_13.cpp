@@ -21,12 +21,9 @@ std::string unknown_string;
 std::string pkcs7_pad(std::string &input, unsigned int block_size) {
     std::string copy = input;
 
-    if (block_size <= input.size())
-        return copy;
-
-    unsigned int difference = block_size - input.size();
+    unsigned int num_chars = block_size - (input.size() % block_size);
     
-    copy.insert(copy.end(), difference, (char) difference);
+    copy.insert(copy.end(), num_chars, (char) num_chars);
 
     return copy;
 }
@@ -35,21 +32,14 @@ std::string ecb_encrypt(std::string &input, CryptoPP::byte *key) {
     CryptoPP::ECB_Mode<CryptoPP::AES>::Encryption e;
     e.SetKey(key, 16);
 
-    unsigned int num_blocks = (input.size() / 16) + (input.size() % 16 != 0);
-
     std::string output;
 
-    for (auto i = 0U; i < num_blocks; ++i) {
-        std::string curr_block = input.substr(i*16, 16);
-        if (curr_block.size() != 16) {
-            curr_block = pkcs7_pad(curr_block, 16);
-        }
-        CryptoPP::StringSource ss1(curr_block, true,
-                new CryptoPP::StreamTransformationFilter(e,
-                    new CryptoPP::StringSink(output),
-                    CryptoPP::BlockPaddingSchemeDef::NO_PADDING)
-        );
-    }
+    std::string working_copy = pkcs7_pad(input, 16);
+
+    CryptoPP::StringSource ss1(working_copy, true,
+            new CryptoPP::StreamTransformationFilter(e,
+                new CryptoPP::StringSink(output))
+    );
 
     return output;
 }
@@ -133,11 +123,11 @@ int main(void) {
     crafted_email.append(11, '\x0b');
     std::string profile_string_1 = profile_for(crafted_email);
     std::string encrypted_profile_1 = encrypt_encoded_profile(profile_string_1);
-    assert(encrypted_profile_1.length() == 64);
+    assert(encrypted_profile_1.length() == 80);
 
     std::string profile_string_2 = profile_for("aaaaaaaaaaaaa");
     std::string encrypted_profile_2 = encrypt_encoded_profile(profile_string_2);
-    assert(encrypted_profile_2.length() == 48);
+    assert(encrypted_profile_2.length() == 64);
 
     std::string crafted_profile = encrypted_profile_2.substr(0, 32) + encrypted_profile_1.substr(16, 16);
 
