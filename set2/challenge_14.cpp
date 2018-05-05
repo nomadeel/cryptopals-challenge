@@ -135,26 +135,26 @@ unsigned int find_block_size(void) {
 }
 
 unsigned int find_noise_size(unsigned int block_size) {
-    std::string i {""};
-    std::string i2 {"A"};
-    std::string o = prefix_oracle(i);
-    std::string o2 = prefix_oracle(i2);
+    std::string input {""};
+    std::string input2 {"A"};
+    std::string output = prefix_oracle(input);
+    std::string output2 = prefix_oracle(input2);
 
     // Find which block the last block of noise is located at
     unsigned int last_block = 0U;
-    for (auto i = 0U; i < o2.length(); ++i) {
-        if (o[i] != o2[i]) {
+    for (auto i = 0U; i < output2.length(); ++i) {
+        if (output[i] != output2[i]) {
             last_block = i / block_size;
             break;
         }
     }
 
     // Keep feeding in characters into the oracle until we get two identical blocks
-    std::string input(32, 'A');
+    std::string crafted_input(32, 'A');
     bool found_identical = false;
     unsigned int block = 0;
     while (true) {
-        std::string output = prefix_oracle(input);
+        std::string output = prefix_oracle(crafted_input);
         // Try to look for two identical blocks
         for (auto i = last_block; i < last_block + 2; ++i) {
             if (output.compare(i * block_size, block_size, output, (i+1)*block_size, block_size) == 0) {
@@ -166,7 +166,7 @@ unsigned int find_noise_size(unsigned int block_size) {
         if (found_identical) {
             break;
         }
-        input += 'A';
+        crafted_input += 'A';
     }
 
     // Calculate how many bytes were padding the noise
