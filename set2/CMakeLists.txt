@@ -12,4 +12,7 @@ target_link_libraries(challenge_12 cryptopp)
 add_executable(challenge_13 challenge_13.cpp)
 target_link_libraries(challenge_13 cryptopp)
 
+add_executable(challenge_14 challenge_14.cpp)
+target_link_libraries(challenge_14 cryptopp)
+
 add_executable(challenge_15 challenge_15.cpp)
