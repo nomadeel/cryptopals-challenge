@@ -5,3 +5,4 @@ include_directories("${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(set1)
 add_subdirectory(set2)
+add_subdirectory(set3)

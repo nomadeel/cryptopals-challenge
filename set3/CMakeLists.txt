@@ -1,0 +1,2 @@
+add_executable(challenge_17 challenge_17.cpp)
+target_link_libraries(challenge_17 cryptopp)
