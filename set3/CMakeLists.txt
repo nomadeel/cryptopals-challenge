@@ -16,3 +16,5 @@ endif()
 
 add_executable(challenge_20 challenge_20.cpp)
 target_link_libraries(challenge_20 cryptopp)
+
+add_executable(challenge_21 challenge_21.cpp mersenne_twister.cpp)
