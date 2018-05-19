@@ -45,10 +45,10 @@ namespace MT {
 
             return result;
         }
-        std::vector<std::uint32_t> state_;
     private:
         void twist(void);
 
+        std::vector<std::uint32_t> state_;
         unsigned int state_counter_;
     };
 }
