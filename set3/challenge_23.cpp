@@ -8,25 +8,23 @@
 const auto NUM_STATE = 624;
 
 std::uint32_t untemper_right_shifts(std::uint32_t input, unsigned int shift_amount) {
-    std::uint32_t output = 0;
-    for (auto i = 0; i < 32; i += shift_amount) {
-        std::uint32_t part_mask = (0xFFFFFFFF << (32 - shift_amount)) >> i;
-        std::uint32_t curr_part = input & part_mask;
-        input ^= curr_part >> shift_amount;
-        output |= curr_part;
+    for (auto i = shift_amount; i < 32; i += shift_amount) {
+        // Generate a bitmask for the given part
+        std::uint32_t part_mask = (0xFFFFFFFF << (32 - shift_amount)) >> (i - shift_amount);
+        // Uncover the next shift_amount bits
+        input ^= (input & part_mask) >> shift_amount;
     }
-    return output;
+    return input;
 }
 
 std::uint32_t untemper_left_shifts(std::uint32_t input, unsigned int shift_amount, std::uint32_t mask) {
-    std::uint32_t output = 0;
-    for (auto i = 0; i < 32; i += shift_amount) {
-        std::uint32_t part_mask = (0xFFFFFFFF >> (32 - shift_amount)) << i;
-        std::uint32_t curr_part = input & part_mask;
-        input ^= ((curr_part << shift_amount) & mask);
-        output |= curr_part;
+    for (auto i = shift_amount; i < 32; i += shift_amount) {
+        // Generate a bitmask for the given part
+        std::uint32_t part_mask = (0xFFFFFFFF >> (32 - shift_amount)) << (i - shift_amount);
+        // Uncover the shift_amount bits
+        input ^= (((input & part_mask) << shift_amount) & mask);
     }
-    return output;
+    return input;
 }
 
 std::uint32_t untemper(std::uint32_t input) {
