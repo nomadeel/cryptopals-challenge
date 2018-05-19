@@ -10,6 +10,12 @@ namespace MT {
 
         twist();
     }
+        
+    MersenneTwister::MersenneTwister(const std::vector<std::uint32_t> &state): state_{}, state_counter_{0U} {
+        assert(state.size() == N_);
+        state_.reserve(N_);
+        std::copy(state.begin(), state.end(), state_.begin());
+    }
 
     void MersenneTwister::twist(void) {
         const auto first_half = N_ - M_;

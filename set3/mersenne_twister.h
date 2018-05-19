@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 
 namespace MT {
     // Magic numbers for MT
@@ -24,6 +25,8 @@ namespace MT {
     class MersenneTwister {
     public:
         MersenneTwister(std::uint32_t);
+        MersenneTwister(const std::vector<std::uint32_t> &);
+
         std::uint32_t operator()(void) {
             assert(sizeof(std::uint32_t) == 4);
             // Pass the state through twist function if we've used all numbers to generate
@@ -42,10 +45,10 @@ namespace MT {
 
             return result;
         }
+        std::vector<std::uint32_t> state_;
     private:
         void twist(void);
 
-        std::vector<std::uint32_t> state_;
         unsigned int state_counter_;
     };
 }

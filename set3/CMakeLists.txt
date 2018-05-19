@@ -20,3 +20,5 @@ target_link_libraries(challenge_20 cryptopp)
 add_executable(challenge_21 challenge_21.cpp mersenne_twister.cpp)
 
 add_executable(challenge_22 challenge_22.cpp mersenne_twister.cpp)
+
+add_executable(challenge_23 challenge_23.cpp mersenne_twister.cpp)
