@@ -170,9 +170,9 @@ unsigned int find_noise_size(unsigned int block_size) {
     }
 
     // Calculate how many bytes were padding the noise
-    unsigned int num_padding = input.length() - (2 * block_size);
+    unsigned int num_padding = crafted_input.length() - (2 * block_size);
     // Calculate number of noise bytes
-    unsigned int num_noise = block * block_size - num_padding;
+    unsigned int num_noise = (block * block_size) - num_padding;
 
     return num_noise;
 }
