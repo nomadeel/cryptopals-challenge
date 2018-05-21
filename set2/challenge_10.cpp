@@ -42,12 +42,12 @@ std::string cbc_encrypt(std::string &input, CryptoPP::byte *key, std::string &iv
     CryptoPP::ECB_Mode<CryptoPP::AES>::Encryption e;
     e.SetKey(key, 16);
 
-    unsigned int num_blocks = (input.size() / 16) + (input.size() % 16 != 0);
-
     std::string prev_block = iv;
     std::string output;
 
     std::string working_copy = pkcs7_pad(input, 16);
+
+    unsigned int num_blocks = working_copy.length() / 16;
 
     for (auto i = 0U; i < num_blocks; ++i) {
         std::string curr_block = working_copy.substr(i*16, 16);

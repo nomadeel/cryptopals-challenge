@@ -61,12 +61,12 @@ std::string cbc_encrypt(std::string &input, CryptoPP::byte *key, std::string &iv
     CryptoPP::ECB_Mode<CryptoPP::AES>::Encryption e;
     e.SetKey(key, 16);
 
-    unsigned int num_blocks = (input.size() / 16) + (input.size() % 16 != 0);
-
     std::string prev_block = iv;
     std::string output;
 
     std::string working_copy = pkcs7_pad(input, 16);
+    
+    unsigned int num_blocks = working_copy.length() / 16;
 
     for (auto i = 0U; i < num_blocks; ++i) {
         std::string curr_block = working_copy.substr(i*16, 16);
@@ -138,7 +138,7 @@ std::string account_oracle(std::string &input) {
     // Generate the one off key and IV
     if (!generated_key) {
         CryptoPP::AutoSeededRandomPool prng;
-        // Generate the consistent key and base64 decode the unknown string
+        // Generate the consistent key
         prng.GenerateBlock(key, key.size());
         iv = generate_iv();
         generated_key = true;
@@ -164,14 +164,12 @@ std::string cbc_bitflip(std::string &crafted_input) {
     ciphertext[offset + 0] ^= crafted_input[0] ^ ';';
     // Modify the seventh byte to give us '='
     ciphertext[offset + 6] ^= crafted_input[6] ^ '=';
-    // Modify the twelveth byte to give us ';'
-    ciphertext[offset + 11] ^= crafted_input[11] ^ ';';
 
     return ciphertext;
 }
 
 int main (void) {
-    std::string input {"aaaaaaaaaaaaaaaaaadminatruea"};
+    std::string input {"aaaaaaaaaaaaaaaaaadminatrue"};
     std::string modified_ciphertext = cbc_bitflip(input);
     if (check_admin(modified_ciphertext)) {
         std::cout << "successfully cracked\n";
