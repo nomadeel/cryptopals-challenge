@@ -26,6 +26,7 @@
 *.a
 *.lib
 
+
 # Executables
 *.exe
 *.out
@@ -61,6 +62,9 @@ CMakeCache.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
+
+# Python Files
+*.pyc
 
 # Crypto++ Library
 cryptopp/
