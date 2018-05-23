@@ -3,8 +3,9 @@
 import os
 import sha1
 import struct
+import random
 
-key = os.urandom(16)
+key = os.urandom(random.randint(3, 30))
 
 def validate_mac(message, key, mac):
     output_mac = sha1.Sha1Hash().update(key + message).hexdigest()
