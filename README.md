@@ -11,5 +11,5 @@ In the root of the repository directory, there is a bash script called **setup.s
 **crytopp** library and build the files. Additionally, it will setup the **cmake** build system which will generate the
 Makefiles for each solution subdirectory.
 
-For reference, the solutions were compiled using the C++14 standard using GCC version 7.3.1. The Python scripts in Set 4 use
+For reference, the solutions were compiled using the C++14 standard with GCC version 7.3.1. The Python scripts in Set 4 use
 python2.
