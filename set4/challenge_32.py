@@ -11,12 +11,31 @@ server_url="http://0.0.0.0:8080/test"
 sha1hash_length = 20
 epsilon = 5
 test_server = False
+block_size = 64
+
+def calculate_hmac(file_name, key):
+    if len(key) > block_size:
+        key = sha1.Sha1Hash().update(key).digest()
+    elif len(key) < block_size:
+        key += '\x00' * (block_size - len(key))
+
+    key = bytearray(key)
+
+    o_key_pad = bytearray(len(key))
+    i_key_pad = bytearray(len(key))
+
+    for i in key:
+        o_key_pad += bytearray([i ^ 0x5c])
+        i_key_pad += bytearray([i ^ 0x36])
+
+    i_key_hash = sha1.Sha1Hash().update(i_key_pad + file_name).digest()
+    return sha1.Sha1Hash().update(o_key_pad + i_key_hash).digest()
 
 # Test the server
 
 def test():
     key = "hi"
-    success_mac = sha1.Sha1Hash().update(key + "file").hexdigest()
+    success_mac = calculate_hmac("file", key).encode("hex")
     success_args = { "file": "file", "signature": success_mac }
     url_data = urllib.urlencode(success_args)
 
@@ -74,7 +93,7 @@ def crack_hmac(file_name):
 if __name__ == "__main__":
     if test_server is not False:
         test()
-
-    print("Go watch a Youtube video or something, this will take a really long time (an hour or so)")
-    hmac = crack_hmac("file")
-    print("The hmac for {} is: {}".format("file", hmac))
+    else:
+        print("Go watch a Youtube video or something, this will take a really long time (an hour or so)")
+        hmac = crack_hmac("file")
+        print("The hmac for {} is: {}".format("file", hmac))
